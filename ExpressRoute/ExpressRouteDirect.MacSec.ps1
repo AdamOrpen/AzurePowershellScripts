@@ -7,7 +7,8 @@ Param
     [Parameter(Mandatory=$true, HelpMessage='Peering Provider')][string]$PeeringLocation,
     [Parameter(Mandatory=$true, HelpMessage='Expressroute Direct Capacity')][ValidateSet('10','40','100')][string]$ERDSpeed,
     [Parameter(Mandatory=$true)][ValidateSet('Dot1Q','QinQ')][string]$Encapsulation,
-    [Parameter(Mandatory=$false, HelpMessage='Encryption Key')][string]$CAK
+    [Parameter(Mandatory=$false, HelpMessage='Encryption Key')][string]$CAK,
+    [Parameter(Mandatory=$false, HelpMessage='Testing switch')][ValidateSet('True','False')][string]$test
 )
 ###################################################################
 #                                                                 #
@@ -162,6 +163,10 @@ foreach ($ckt in $CSV) {
     $cktSKUTier = $ckt.SKUTier
     $Circuit = Get-AzExpressRouteCircuit -Name $cktName -ResourceGroupName $RGName -ErrorAction SilentlyContinue
     if (!($Circuit)) {
-        New-AzExpressRouteCircuit -Name $cktName -ResourceGroupName $RGName -Location $cktLocation -ExpressRoutePort $erDirect.port -BandwidthInGbps $CktBandwidth -SkuTier $CktSKUTier -Peering $PeeringLocation
+        New-AzExpressRouteCircuit -Name $cktName -ResourceGroupName $RGName -Location $cktLocation -ExpressRoutePort $erDirect -BandwidthInGbps $CktBandwidth -SkuTier $CktSKUTier -Peering $PeeringLocation
     }
+}
+
+if ($Test -eq "True") {
+    Remove-AzResourceGroup -Name $RGName -Force
 }
