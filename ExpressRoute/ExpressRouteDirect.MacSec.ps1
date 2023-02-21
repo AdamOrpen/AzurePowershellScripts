@@ -53,8 +53,8 @@ $subscription = Get-AzSubscription -SubscriptionId $SubscriptionID
 set-AzContext -SubscriptionObject $subscription
 
 #First we create the Resource Group 
-$ERD = Get-AzResourceGroup -Name $RGName -ErrorAction SilentlyContinue
-if (!($ERD)) {
+$RG = Get-AzResourceGroup -Name $RGName -ErrorAction SilentlyContinue
+if (!($RG)) {
 New-AzResourceGroup -Name $RGName -Location $location  -ErrorAction Stop
 }
 else {
@@ -64,7 +64,7 @@ else {
 #Now we can create the ExpressRoute Direct Resource
 $erDirect = Get-AzExpressRoutePort -ResourceGroupName $RGName -Name $ERDName -ErrorAction SilentlyContinue
 if (!($erDirect)) {
-    $erDirect = New-AzExpressRoutePort -Name $ERDName -ResourceGroupName $RGName -PeeringLocation $PeeringLocation -BandwidthInGbps $ERDSpeed -Encapsulation $Encapsulation -Location $location  -ErrorAction Stop
+    $erDirect = New-AzExpressRoutePort -Name $ERDName -ResourceGroupName $RGName -PeeringLocation $PeeringLocation -BandwidthInGbps $ERDSpeed -Encapsulation $Encapsulation -Location $location -ErrorAction Stop
     #Generate the Letter of Authority
     #New-Item -ItemType Directory -Path "C:\LOA"
     #New-AzExpressRoutePortLOA -ExpressRoutePort $ERDirect -CustomerName TestCustomerName -Destination "C:\LOA" -ErrorAction Stop
@@ -120,7 +120,7 @@ Set-AzKeyVaultAccessPolicy -VaultName $KVName -PermissionsToSecrets get -ObjectI
 #Lets reset MacSec to null first in case we tried already
 if (!($erDirect)) {
     $erDirect = Get-AzExpressRoutePort -ResourceGroupName $RGName -Name $ERDName -ErrorAction SilentlyContinue
-    }
+}
 $erDirect.Links[0]. MacSecConfig.CknSecretIdentifier = $null
 $erDirect.Links[0]. MacSecConfig.CakSecretIdentifier = $null
 $erDirect.Links[1]. MacSecConfig.CknSecretIdentifier = $null
