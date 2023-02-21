@@ -1,4 +1,4 @@
-Name,Location,Bandwidth,SKUTier
-ERC-1,North Europe,1,Standard
-ERC-2,North Europe,2,Standard
-ERC-3,North Europe,10,Standard
+Name,Location,Bandwidth,SKUTier,SKUFamily
+ERC-1,North Europe,1,local,UnlimitedData
+ERC-2,North Europe,2,Standard,MeteredData
+ERC-3,North Europe,5,Standard,MeteredData
