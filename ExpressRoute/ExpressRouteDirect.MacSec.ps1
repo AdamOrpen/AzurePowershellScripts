@@ -26,6 +26,7 @@ Param
 
 #$SubscriptionID = ""
 $ResourceGroupName = "" 
+#$KeyVaultID = "" #New feature to be completed in later version of script
 $DeploymentName = "Static1" # Unique identifier when running multiple tests
 $Location = "NorthEurope" # Resource Location
 $PeeringLocation = "Equinix-Dublin-DB3" # ER Direct Provider location
@@ -74,17 +75,23 @@ else {
 }
 
 #Now we identify the Keyvault to house CKN and CAK
-$keyVaults = Get-AzKeyVault -ResourceGroupName $RGName -ErrorAction SilentlyContinue
-if (!($KeyVaults)) {
-    $Random = Get-Random
-    $KVName = "KV-" + $DeploymentName + "-" + $Random
-    $KeyVault = New-AzKeyVault -Name $KVName -ResourceGroupName $RGName -Location $Location -SoftDeleteRetentionInDays 30 -ErrorAction Stop
+#If the KeyVault has not been explicitly defined, we will look for one in the current Resource Group.
+#If there is no Keyvault found, we will create one.
+if (!($KeyVaultID)) {
+    $keyVaults = Get-AzKeyVault -ResourceGroupName $RGName -ErrorAction SilentlyContinue
+    if (!($KeyVaults)) {
+        $Random = Get-Random
+        $KVName = "KV-" + $DeploymentName + "-" + $Random
+        $KeyVault = New-AzKeyVault -Name $KVName -ResourceGroupName $RGName -Location $Location -SoftDeleteRetentionInDays 30 -ErrorAction Stop
+    }
+    else {
+        $KeyVault = $Keyvaults[0]
+        $KVName = $Keyvault.VaultName 
+        write-host "Found $KVName KeyVault. Will use this existing vault" -ForegroundColor Green
+    }
 }
 else {
-    $KeyVault = $Keyvaults[0]
-    $KVName = $Keyvault.VaultName 
-    write-host "Found $KVName KeyVault. Will use this existing vault" -ForegroundColor Green
-    
+    $KeyVault = Get-AzKeyVault -VaultName $KeyVaultID
 }
 $Identity = Get-AzUserAssignedIdentity -Name $MIName -ResourceGroupName $RGName -ErrorAction SilentlyContinue
 if (!($Identity)) {
