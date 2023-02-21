@@ -34,7 +34,11 @@ $Encapsulation = "Dot1Q" # Dot1Q or QinQ
 $CAKInput = ""
 $test = "true" # True or False
 
-
+#Enable the Resource Provider to allow for ExpressRoute Direct ports
+$Feature = Get-AzProviderFeature -featureName AllowExpressRoutePorts -ProviderNamespace Microsoft.Network -ErrorAction SilentlyContinue
+if (!($Feature.RegistrationState -eq "Registered")) {
+    Register-AzProviderFeature -featureName AllowExpressRoutePorts -ProviderNamespace Microsoft.Network -ErrorAction Stop
+}
 
 if (!($ResourceGroupName)) {
     $RGName = "ExpressRouteDirect"
