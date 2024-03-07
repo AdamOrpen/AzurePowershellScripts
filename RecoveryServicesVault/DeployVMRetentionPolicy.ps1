@@ -2,13 +2,29 @@ Param
 (
     [Parameter(Mandatory=$true)][ValidateSet('Test','NonProd','Prod')][string]$State
 )
-$Company = "Elecosoft"
+###################################################################
+# Author: Adam Orpen                                              #
+# Purpose: Deploy standardised retention policies to all          #
+#     Recovery Services Vaults in a range of subscriptions        #
+# Built: 17/02/2023                                               #
+# Tested: 20/02/2023                                              #
+# Language: Powershell                                            #
+# Github: https://github.com/AdamOrpen/AzurePowershellScripts     #
+# This script is an idempotent execution intended to be run       #
+#     multiple times, depending on the status of your estate.     #
+# Please customise lines 18 and 25 to                             #
+#    set your company name and test estate                        #
+###################################################################
+$Company = "ABC123"
+$TestSubscriptionName = "MCAPS-Hybrid-REQ-47601-2022-adamorpen"
+###################################################################
+
 $StartTime = Get-Date
 $Subscriptions = Get-AzSubscription | Sort-Object Name
 
 if ($State -eq "Test")
 {
-    $Subs = $Subscriptions | Where-Object {$_.Name -eq "YourTestSubscriptionNameHere"}
+    $Subs = $Subscriptions | Where-Object {$_.Name -eq $TestSubscriptionName}
 }
 elseif ($State -eq "NonProd") 
 {
@@ -69,7 +85,7 @@ foreach ($Sub in $Subs)
         $StdVMPol = Get-AzRecoveryServicesBackupProtectionPolicy -Name $StdPolicyName -ErrorAction SilentlyContinue
         if (!($StdVMPol))
         {
-            New-AzRecoveryServicesBackupProtectionPolicy -Name $PolicyName -WorkloadType AzureVM -RetentionPolicy $StdRetPol -SchedulePolicy $StdSchPol -VaultId $RSVID
+            New-AzRecoveryServicesBackupProtectionPolicy -Name $StdPolicyName -WorkloadType AzureVM -RetentionPolicy $StdRetPol -SchedulePolicy $StdSchPol -VaultId $RSVID
             Write-Host "New VM Standard Backup policy created for $RSVName in Subscription $SubName"
         }
         else {
