@@ -16,7 +16,7 @@ Param
 #    set your company name and test estate                        #
 ###################################################################
 $Company = "ABC123"
-$TestSubscriptionName = "MCAPS-Hybrid-REQ-47601-2022-adamorpen"
+$TestSubscriptionName = "TestSub"
 ###################################################################
 
 $StartTime = Get-Date
