@@ -5,3 +5,4 @@ Microsoft.ManagedIdentity/userAssignedIdentities
 microsoft.insights/workbooks
 microsoft.network/virtualwans
 microsoft.compute/disks
+microsoft.compute/virtualmachines/extensions
