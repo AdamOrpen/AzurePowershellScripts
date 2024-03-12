@@ -6,3 +6,6 @@ microsoft.insights/workbooks
 microsoft.network/virtualwans
 microsoft.compute/disks
 microsoft.compute/virtualmachines/extensions
+microsoft.network/privatednszones
+microsoft.network/privatednszones/virtualnetworklinks
+microsoft.network/privateendpoints
