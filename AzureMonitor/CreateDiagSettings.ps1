@@ -13,7 +13,7 @@ Param
 # Github: https://github.com/AdamOrpen/AzurePowershellScripts       #
 # This script is an idempotent execution intended to be run         #
 #     multiple times, depending on the status of your estate.       #
-# Please customise following line to set your Workspace resource id.#
+# Please customise following lines to set your Workspace resource id#
 #####################################################################
 #Workspace details:
 $ResourceGroupName = "LAW"
