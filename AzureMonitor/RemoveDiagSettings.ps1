@@ -20,11 +20,7 @@ $Sub = Get-AzSubscription -SubscriptionId $SubscriptionID
 Set-AzContext -SubscriptionObject $Sub
 $AllResources = Get-AzResource
 $RTypes = $AllResources | Sort-Object ResourceType -Unique
-$exclusions = @('Microsoft.Insights/actiongroups',
-                'Microsoft.OperationsManagement/solutions',
-                'Microsoft.Network/networkWatchers',
-                'Microsoft.ManagedIdentity/userAssignedIdentities',
-                'microsoft.insights/workbooks')
+$exclusions = @(Get-Content .\exclusions.txt)
 $RTypes = $Rtypes |Where-Object {$_.ResourceType -notmatch ($exclusions -Join "|") }
 foreach ($RType in $Rtypes)
 {
@@ -39,7 +35,7 @@ foreach ($RType in $Rtypes)
             $Diag = Get-AzDiagnosticSetting -ResourceId $RID -Name $DiagName -ErrorAction SilentlyContinue
             if ($Diag)
             {
-                Write-host "Removing Diagnostic setting from Resource called $RName"
+                Write-host "Removing Diagnostic setting from Resource called $RName" -ForegroundColor Red
                 Remove-AzDiagnosticSetting -ResourceId $RID -Name $DiagName
             } 
             

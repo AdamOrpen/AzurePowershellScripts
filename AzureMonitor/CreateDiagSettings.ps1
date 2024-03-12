@@ -15,23 +15,19 @@ Param
 #     multiple times, depending on the status of your estate.     #
 # Please customise following line to set your Workspace target.   #
 ###################################################################
-$WSRID = "/subscriptions/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa/resourceGroups/aaaaa/providers/Microsoft.OperationalInsights/workspaces/aaaaaaaaa"
+$WSRID = "/subscriptions/abc/resourceGroups/LAW/providers/Microsoft.OperationalInsights/workspaces/123"
 ###################################################################
 
 $Sub = Get-AzSubscription -SubscriptionId $SubscriptionID
 Set-AzContext -SubscriptionObject $Sub
 $AllResources = Get-AzResource
 $RTypes = $AllResources | Sort-Object ResourceType -Unique
-$exclusions = @('Microsoft.Insights/actiongroups',
-                'Microsoft.OperationsManagement/solutions',
-                'Microsoft.Network/networkWatchers',
-                'Microsoft.ManagedIdentity/userAssignedIdentities',
-                'microsoft.insights/workbooks')
+$exclusions = @(Get-Content .\exclusions.txt)
 $RTypes = $Rtypes |Where-Object {$_.ResourceType -notmatch ($exclusions -Join "|") }
 foreach ($RType in $Rtypes)
 {
     $RTypeName = $Rtype.ResourceType
-    Write-host "Now processing Resource type $RTypeName"
+    Write-host "Now processing Resource type $RTypeName" 
     $Resources = $AllResources | Where-Object {$_.ResourceType -eq $Rtype.ResourceType}
     $RID0 = $Resources[0].Id
     $metric = @()
@@ -48,9 +44,10 @@ foreach ($RType in $Rtypes)
             $RName = $Resource.Name
             $Exists = Get-AzDiagnosticSetting -Name $DiagName -ResourceId $RID -ErrorAction SilentlyContinue
             if ($Exists) {
-                write-host "Diagnostic Setting with name $DiagName already exists for $RName. "
+                write-host "Diagnostic Setting with name $DiagName already exists for $RName. " -ForegroundColor Blue
             }
             else {
+                Write-host "Adding Diagnostic setting from Resource called $RName" -ForegroundColor Green
                 New-AzDiagnosticSetting -Name $DiagName -ResourceId $RID -WorkspaceId $WSRID -Log $log -Metric $metric
             }
             

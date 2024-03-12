@@ -1,0 +1,7 @@
+Microsoft.Insights/actiongroups
+Microsoft.OperationsManagement/solutions
+Microsoft.Network/networkWatchers
+Microsoft.ManagedIdentity/userAssignedIdentities
+microsoft.insights/workbooks
+microsoft.network/virtualwans
+microsoft.compute/disks
