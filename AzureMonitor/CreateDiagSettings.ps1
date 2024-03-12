@@ -15,7 +15,7 @@ Param
 #     multiple times, depending on the status of your estate.       #
 # Please customise following line to set your Workspace resource id.#
 #####################################################################
-$WSRID = "/subscriptions/abc/resourceGroups/LAW/providers/Microsoft.OperationalInsights/workspaces/123"
+$WSRID = "/subscriptions/abc/resourceGroups/xyz/providers/Microsoft.OperationalInsights/workspaces/123"
 #####################################################################
 
 $Sub = Get-AzSubscription -SubscriptionId $SubscriptionID
