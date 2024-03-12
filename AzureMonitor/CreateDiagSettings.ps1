@@ -15,11 +15,14 @@ Param
 #     multiple times, depending on the status of your estate.       #
 # Please customise following line to set your Workspace resource id.#
 #####################################################################
-$WSRID = "/subscriptions/abc/resourceGroups/xyz/providers/Microsoft.OperationalInsights/workspaces/123"
+#Workspace details:
+$ResourceGroupName = "LAW"
+$WorkspaceName = "LAW-NEU-General"
 #####################################################################
 
 $Sub = Get-AzSubscription -SubscriptionId $SubscriptionID
 Set-AzContext -SubscriptionObject $Sub
+$WSRID = "/subscriptions/" + $SubscriptionID + "/resourceGroups/" + $ResourceGroupName + "/providers/Microsoft.OperationalInsights/workspaces/" + $Workspacename
 $AllResources = Get-AzResource
 $RTypes = $AllResources | Sort-Object ResourceType -Unique
 $exclusions = @(Get-Content .\exclusions.txt)
