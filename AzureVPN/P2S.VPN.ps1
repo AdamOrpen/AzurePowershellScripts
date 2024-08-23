@@ -5,13 +5,14 @@ Param
 $SubID = $SubscriptionID
 $VNetName  = "vnet-silverbear"
 $VPNClientAddressPool = "172.16.0.0/24"
-$RGName = "Silverbear"
+$RGName = "SilverTear"
 $Location = "NorthEurope"
-$GWName = "VGW-Silverbear"
-$GWPIPName = "PIP-VGW-Silverbear"
-$P2SRootCertName = "vpn.redarak.cer"
-$filePathForCert = "C:\Users\adamorpen\OneDrive - Adlior\certs\vpn.redarak.cer"
-$filePathForPfx = "C:\Users\adamorpen\OneDrive - Adlior\certs\vpn.redarak.pfx"
+$GWName = "VGW-SilverTear"
+$GWPIPName = "PIP-VGW-SilverTear"
+$P2SRootCertName = "vpn.SilverTear.cer"
+$filepath = "C:\temp\"
+$CertName = "vpn.SilverTear.cer"
+$PfxName = "vpn.SilverTear.pfx"
 #
 $Sub = Get-AzSubscription -SubscriptionId $SubID
 Set-AzContext -SubscriptionObject $Sub
@@ -26,6 +27,8 @@ if ($GW) {
     $GW = New-AzVirtualNetworkGateway -Name $GWName -ResourceGroupName $RGName -Location $Location -IpConfigurations $gwipconfig -GatewayType Vpn -VpnType RouteBased -EnableBgp $false -GatewaySku VpnGw2 -VpnGatewayGeneration "Generation2" -VpnClientProtocol IkeV2,OpenVPN
 }
 Set-AzVirtualNetworkGateway -VirtualNetworkGateway $GW -VpnClientAddressPool $VPNClientAddressPool
+$filePathForCert = $filepath + $CertName
+$filePathForPfx = $filepath + $PfxName
 if (Get-Item $filePathForCert -ErrorAction SilentlyContinue) {
     Write-host "Certificte already exists"
 } else {
