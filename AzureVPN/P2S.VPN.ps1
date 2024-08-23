@@ -39,4 +39,5 @@ if (Get-Item $filePathForCert -ErrorAction SilentlyContinue) {
 $CertBase64 = [system.convert]::ToBase64String($cert.RawData)
 Add-AzVpnClientRootCertificate -VpnClientRootCertificateName $P2SRootCertName -VirtualNetworkGatewayname $GWName -ResourceGroupName $RGName -PublicCertData $CertBase64 
 
+#Legacy Forced Tunneling Config
 #Set-AzVirtualNetworkGateway -VirtualNetworkGateway $GW -CustomRoute 0.0.0.0/1, 128.0.0.0/1
