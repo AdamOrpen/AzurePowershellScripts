@@ -1,4 +1,8 @@
-$SubID = "7c84ebbe-ec96-4b35-9cc0-9d19ea2f8426"
+Param
+(
+    [Parameter(Mandatory=$true)][string]$SubscriptionID
+)
+$SubID = $SubscriptionID
 $VNetName  = "vnet-silverbear"
 $VPNClientAddressPool = "172.16.0.0/24"
 $RGName = "Silverbear"
