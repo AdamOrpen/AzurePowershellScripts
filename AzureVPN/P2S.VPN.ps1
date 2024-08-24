@@ -3,12 +3,12 @@ Param
     [Parameter(Mandatory=$true)][string]$SubscriptionID
 )
 $SubID = $SubscriptionID
-$VNetName  = "vnet-silverbear"
+$VNetName  = "VNet-SilverTear"
 $VPNClientAddressPool = "172.16.0.0/24"
 $RGName = "SilverTear"
 $Location = "NorthEurope"
-$GWName = "VGW-SilverTear"
-$GWPIPName = "PIP-VGW-SilverTear"
+$GWName = "VNG-SilverTear"
+$GWPIPName = "PIP-VNG-SilverTear"
 $P2SRootCertName = "vpn.SilverTear.cer"
 $filepath = "C:\temp\"
 $CertName = "vpn.SilverTear.cer"
